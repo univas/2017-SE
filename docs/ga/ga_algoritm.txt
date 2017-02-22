@@ -1,0 +1,18 @@
+//Genetic algorithm - algorithm
+
+create initial population P of size N
+evaluate the individuals of P
+stop criteria <- epoch >= MAX_EPOCH OR found a good individual
+while(not reach the stop criteria)
+
+	//generate the children
+	loop from 1 to N/2
+		select two parents
+		generate two children crossing the two chosen parents
+		mutate the child if it is chosen.
+		insert two children into population NEW_POP
+	end loop
+	P <- NEW_POP
+	evaluate the individuals of P
+	stop criteria <- epoch >= MAX_EPOCH OR found a good individual
+end while
