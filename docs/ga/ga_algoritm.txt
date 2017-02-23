@@ -1,6 +1,6 @@
 //Genetic algorithm - algorithm
 
-create initial population P of size N
+create initial random population P of size N
 evaluate the individuals of P
 stop criteria <- epoch >= MAX_EPOCH OR found a good individual
 while(not reach the stop criteria)
