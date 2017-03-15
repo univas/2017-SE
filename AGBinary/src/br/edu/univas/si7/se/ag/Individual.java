@@ -22,4 +22,13 @@ public class Individual {
 	public double getFitness() {
 		return fitness;
 	}
+
+	@Override
+	public String toString() {
+		return "Individual [info=" + info
+				+ ", value=" + Integer.parseInt(info, 2)
+				+ ", fitness=" + fitness + "]";
+	}
+	
+	
 }

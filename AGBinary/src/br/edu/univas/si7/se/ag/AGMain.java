@@ -13,6 +13,7 @@ public class AGMain {
 	public void execute() {
 		createInitialPopulation();
 		evaluate();
+		printCurrentGeneration();
 		epoch = 1;
 		logEpoch();
 		while(stopCriteria()) {
@@ -20,6 +21,7 @@ public class AGMain {
 			currentGeneration = newGeneration;
 			executeMutation();
 			evaluate();
+			printCurrentGeneration();
 			epoch++;
 			logEpoch();
 		}
@@ -106,8 +108,13 @@ public class AGMain {
 			String rawInfo = Integer.toBinaryString(x);
 			String info = String.format("%7s", rawInfo).replace(' ', '0');
 			
-//			System.out.println(info + ":" + x);
 			currentGeneration.add(new Individual(info));
+		}
+	}
+	
+	private void printCurrentGeneration() {
+		for (Individual individual : currentGeneration) {
+			System.out.println(individual);
 		}
 	}
 }
