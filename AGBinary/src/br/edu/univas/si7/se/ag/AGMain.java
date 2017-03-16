@@ -1,6 +1,7 @@
 package br.edu.univas.si7.se.ag;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -13,6 +14,7 @@ public class AGMain {
 	public void execute() {
 		createInitialPopulation();
 		evaluate();
+		Collections.sort(currentGeneration, new BinaryComparator());
 		printCurrentGeneration();
 		epoch = 1;
 		logEpoch();
@@ -21,6 +23,7 @@ public class AGMain {
 			currentGeneration = newGeneration;
 			executeMutation();
 			evaluate();
+			Collections.sort(currentGeneration, new BinaryComparator());
 			printCurrentGeneration();
 			epoch++;
 			logEpoch();
@@ -56,12 +59,17 @@ public class AGMain {
 		
 		int pos = 0;
 		
+//		currentGeneration.sort(new BinaryComparator());//versão mais nova do java
+		
 		while(currentGeneration.size() != newGeneration.size()) {
 		
 			//choose the parents
 			//TODO: melhorar
-			Individual individualOne = currentGeneration.get(pos++);
-			Individual individualTwo = currentGeneration.get(pos++);
+//			Individual individualOne = currentGeneration.get(pos++);
+//			Individual individualTwo = currentGeneration.get(pos++);
+			
+			Individual individualOne = chooseParent();
+			Individual individualTwo = chooseParent();
 			
 			//cross
 			int crossPoint = new Random().nextInt(6) + 1;
@@ -76,17 +84,46 @@ public class AGMain {
 			
 			String part21 = info2.substring(0, crossPoint); //part 1 do ind 2
 			
-			try{
-				String part22 = info1.substring(crossPoint, 7); //part 2 do ind 1
-				Individual childTwo = new Individual(part21 + part22);
-				
-				newGeneration.add(childOne);
-				newGeneration.add(childTwo);
-			}catch(Exception e) {
-				System.out.println(Integer.parseInt(individualOne.getInfo(), 2)  + " - " + info1 + " cp: " + crossPoint);
-				System.out.println(Integer.parseInt(individualTwo.getInfo(), 2)  + " - " + info2 + " cp: " + crossPoint);
-			}
+			String part22 = info1.substring(crossPoint, 7); //part 2 do ind 1
+			Individual childTwo = new Individual(part21 + part22);
+			
+			newGeneration.add(childOne);
+			newGeneration.add(childTwo);
 		}
+	}
+
+	//TODO: exercício para casa: pensar e implementar a roleta invertida
+	private Individual chooseParent() {
+		double max = 0; //soma de todos os fitness
+		for (Individual individual : currentGeneration) {
+			max += individual.getFitness();
+		}
+		
+		List<Double> percentList = new ArrayList();//lista de percentuais
+		double sum = 0;
+		for (Individual individual : currentGeneration) {
+			double value = individual.getFitness() / max * 100;
+			percentList.add(value);
+			sum += value;
+		}
+		System.out.println("sum: " + sum + " percentList: " + percentList);
+		
+		int point = new Random().nextInt(100);//ponto sorteado
+		System.out.println("point: " + point);
+		
+		int count = 0; //posição do elemento sorteado
+		for (Double d : percentList) {
+			if(d > d) {
+				break;
+			}
+			count++;
+		}
+		
+		if(count == currentGeneration.size()) {
+			count--;
+		}
+		System.out.println("count: " + count);
+		return currentGeneration.get(count);
 	}
 
 	private boolean stopCriteria() {
