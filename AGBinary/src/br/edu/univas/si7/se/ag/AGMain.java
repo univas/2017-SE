@@ -10,6 +10,7 @@ public class AGMain {
 	private List<Individual> currentGeneration;
 	private List<Individual> newGeneration;
 	private int epoch;
+	private Random rand = new Random(AGParameters.SEED);
 	
 	public void execute() {
 		createInitialPopulation();
@@ -72,7 +73,7 @@ public class AGMain {
 			Individual individualTwo = chooseParent();
 			
 			//cross
-			int crossPoint = new Random().nextInt(6) + 1;
+			int crossPoint = rand.nextInt(6) + 1;
 			
 			String info1 = individualOne.getInfo();
 			String info2 = individualTwo.getInfo();
@@ -100,13 +101,14 @@ public class AGMain {
 		}
 		System.out.println("Choose parent: max: " + max);
 		
-		int point = new Random().nextInt((int)max);//ponto sorteado
-		System.out.println("point: " + point);
+		double point = rand.nextInt((int)max);//ponto sorteado
+//		System.out.println("point: " + point);
 		
-		int sum = 0; //soma dos fitness
+		double sum = 0; //soma dos fitness
 		
 		for (Individual individual : currentGeneration) {
 			sum += individual.getFitness();
+//			System.out.println("sum: " + sum);
 			if(sum > point) {
 				System.out.println("Parent: " + individual);
 				return individual;
@@ -114,7 +116,7 @@ public class AGMain {
 		}
 		//se não achou nenhum, então retorna o último
 		Individual individual = currentGeneration.get(currentGeneration.size() - 1);
-		System.out.println("Parent: " + individual);
+		System.out.println("Parent last: " + individual);
 		return individual;
 	}
 
@@ -129,7 +131,6 @@ public class AGMain {
 	}
 
 	private void createInitialPopulation() {
-		Random rand = new Random(83);
 		currentGeneration = new ArrayList<Individual>();
 		for (int i = 0; i < AGParameters.POPULATION_SIZE; i++) {
 			int x = rand.nextInt(127);// max of 7 bits
