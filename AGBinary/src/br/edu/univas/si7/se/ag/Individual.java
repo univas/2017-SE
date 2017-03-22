@@ -13,6 +13,8 @@ public class Individual {
 		int x = Integer.parseInt(info, 2);
 		//TODO: melhorar este cálculo
 		fitness = Math.pow(x, 2) * 2 - 3 * x + 4;
+		fitness = 1000/fitness;//calcula o inverso, pois nós vamos buscar o menor
+		//usa mil pois os resultados estão muito pequenos
 	}
 	
 	public String getInfo() {

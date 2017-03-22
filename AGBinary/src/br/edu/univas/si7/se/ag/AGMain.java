@@ -98,32 +98,24 @@ public class AGMain {
 		for (Individual individual : currentGeneration) {
 			max += individual.getFitness();
 		}
+		System.out.println("Choose parent: max: " + max);
 		
-		List<Double> percentList = new ArrayList();//lista de percentuais
-		double sum = 0;
-		for (Individual individual : currentGeneration) {
-			double value = individual.getFitness() / max * 100;
-			percentList.add(value);
-			sum += value;
-		}
-		System.out.println("sum: " + sum + " percentList: " + percentList);
-		
-		int point = new Random().nextInt(100);//ponto sorteado
+		int point = new Random().nextInt((int)max);//ponto sorteado
 		System.out.println("point: " + point);
 		
-		int count = 0; //posição do elemento sorteado
-		for (Double d : percentList) {
-			if(d > d) {
-				break;
-			}
-			count++;
-		}
+		int sum = 0; //soma dos fitness
 		
-		if(count == currentGeneration.size()) {
-			count--;
+		for (Individual individual : currentGeneration) {
+			sum += individual.getFitness();
+			if(sum > point) {
+				System.out.println("Parent: " + individual);
+				return individual;
+			}
 		}
-		System.out.println("count: " + count);
-		return currentGeneration.get(count);
+		//se não achou nenhum, então retorna o último
+		Individual individual = currentGeneration.get(currentGeneration.size() - 1);
+		System.out.println("Parent: " + individual);
+		return individual;
 	}
 
 	private boolean stopCriteria() {
