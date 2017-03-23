@@ -53,6 +53,28 @@ public class AGMain {
 		//TODO: tarefa para casa
 		//DICA: criar uma constante com o percentual (de 1% a 3%) de mutação
 		//ou seja, percentual de indivíduos que serão mutados naquela época
+		
+		int amount = rand.nextInt(100);
+		if(amount <= AGParameters.MUTATION_RATE) {
+			amount++;
+			
+			for (int i = 0; i < amount; i++) {
+				int elementChoosen = rand.nextInt(currentGeneration.size() - 1);
+				Individual individual = currentGeneration.get(elementChoosen);
+				System.out.println("Mutating: " + individual);
+				
+				int position = rand.nextInt(6);//posição que será alterada
+				char bit = individual.getInfo().charAt(position);
+				bit = bit == '0' ? '1' : '0';//inverte o bit
+
+				StringBuilder builder = new StringBuilder(individual.getInfo());
+				builder.setCharAt(position, bit);//seta o novo caractere
+				
+				individual.setInfo(builder.toString());
+				System.out.println("Mutated: " + individual);
+			}
+			
+		}
 	}
 
 	private void executeCrossing() {
@@ -99,7 +121,7 @@ public class AGMain {
 		for (Individual individual : currentGeneration) {
 			max += individual.getFitness();
 		}
-		System.out.println("Choose parent: max: " + max);
+//		System.out.println("Choose parent: max: " + max);
 		
 		double point = rand.nextInt((int)max);//ponto sorteado
 //		System.out.println("point: " + point);
@@ -116,7 +138,7 @@ public class AGMain {
 		}
 		//se não achou nenhum, então retorna o último
 		Individual individual = currentGeneration.get(currentGeneration.size() - 1);
-		System.out.println("Parent last: " + individual);
+//		System.out.println("Parent last: " + individual);
 		return individual;
 	}
 
@@ -133,7 +155,7 @@ public class AGMain {
 	private void createInitialPopulation() {
 		currentGeneration = new ArrayList<Individual>();
 		for (int i = 0; i < AGParameters.POPULATION_SIZE; i++) {
-			int x = rand.nextInt(127);// max of 7 bits
+			int x = rand.nextInt(Individual.BIT_SIZE);// max of 7 bits
 			
 			String rawInfo = Integer.toBinaryString(x);
 			String info = String.format("%7s", rawInfo).replace(' ', '0');
